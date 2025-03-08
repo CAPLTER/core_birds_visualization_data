@@ -20,14 +20,20 @@ locations_df['lat'] = pd.to_numeric(locations_df['lat'], errors='coerce')
 locations_df['long'] = pd.to_numeric(locations_df['long'], errors='coerce')
 locations_df['begin_date'] = pd.to_datetime(locations_df['begin_date'], errors='coerce')
 locations_df['end_date'] = pd.to_datetime(locations_df['end_date'], errors='coerce')
-locations_df = locations_df.dropna(subset=['lat', 'long'])  # Drop rows with missing location data
+
+# Drop rows with missing location data, that is missing latitude and longitude values
+locations_df = locations_df.dropna(subset=['lat', 'long'])
 
 # Clean Bird Surveys Data
 surveys_df['survey_date'] = pd.to_datetime(surveys_df['survey_date'], errors='coerce')
 surveys_df['time_start'] = pd.to_datetime(surveys_df['time_start'], errors='coerce').dt.time
 surveys_df['time_end'] = pd.to_datetime(surveys_df['time_end'], errors='coerce').dt.time
-surveys_df.fillna({"wind_speed": 0, "air_temp": surveys_df["air_temp"].median()}, inplace=True)  # Fill missing values
-surveys_df = surveys_df.drop_duplicates()  # Remove duplicates
+
+# Fill missing values
+surveys_df.fillna({"wind_speed": 0, "air_temp": surveys_df["air_temp"].median()}, inplace=True)
+
+# Remove duplicates
+surveys_df = surveys_df.drop_duplicates()
 
 # Clean Bird Observations Data
 observations_df['survey_date'] = pd.to_datetime(observations_df['survey_date'], errors='coerce')
